@@ -1,4 +1,3 @@
-hello, world
-hello, david
-hello, john
-hello, thor
+#, id, question, possible, correct
+0, how are you?, good | not bad | bad, good
+1, who am I?, RaptorExTolop | Ducko323 | Primeagen, RaptorExTolop
