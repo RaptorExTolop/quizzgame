@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strings"
 )
@@ -21,10 +22,13 @@ func main() {
 		switch userInput {
 		case "add":
 			questions.add("testing", blankStringList, blankStringList)
+			addInput(&questions)
 		case "delete":
 			questions.delete(1)
 		case "print":
 			questions.printQuestions()
+		default:
+			fmt.Println("Unknown command")
 		}
 	}
 }
