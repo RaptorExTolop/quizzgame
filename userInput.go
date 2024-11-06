@@ -63,27 +63,28 @@ func addInput(qs *Questions) error {
 	var possibleAnswersSplitRS, correctAnswersSplitRS []string
 
 	var corAnsInPosAns bool = false
-	for i := range possibleAnswersSplit {
+	for i := range possibleAnswersSplit { // TODO: FIX THIS STUDIP ASS MUTHER FUCKER
 		possibleAnswersSplitRS = append(possibleAnswersSplitRS, strings.TrimSpace(possibleAnswersSplit[i]))
-		if len(correctAnswersSplit) == 1 {
-			if correctAnswersSplit[0] == possibleAnswersSplit[i] {
+		for n := range correctAnswersSplit {
+			correctAnswersSplitRS = append(correctAnswersSplitRS, strings.TrimSpace(correctAnswersSplit[n]))
+			if correctAnswersSplitRS[n] == possibleAnswersSplitRS[i] {
 				corAnsInPosAns = true
-				correctAnswersSplitRS[0] = strings.TrimSpace(correctAnswersSplit[i])
-				break
-			}
-		} else {
-			for n := range correctAnswersSplit {
-				if correctAnswersSplit[n] == possibleAnswersSplit[i] {
-					correctAnswersSplitRS = append(correctAnswersSplitRS, strings.TrimSpace(correctAnswersSplit[n]))
-					corAnsInPosAns = true
-					break
-				}
 			}
 		}
 	}
 
+	if len(possibleAnswersSplitRS) <= 0 {
+		err := errors.New("not enough possible answers")
+		return err
+	}
+
+	if len(correctAnswersSplitRS) > len(possibleAnswersSplitRS) {
+		err := errors.New("incorrect number of correct answers")
+		return err
+	}
+
 	if !corAnsInPosAns {
-		fmt.Println("No correct answer is in the possible answers")
+		//fmt.Println("No correct answer is in the possible answers")
 		err := errors.New("no correct answer is in the possible answers")
 		return err
 	}

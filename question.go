@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/aquasecurity/table"
 )
@@ -84,11 +85,19 @@ func (questions *Questions) printQuestions() error {
 	table.SetRowLines(false)
 	table.SetHeaders("Name", "Possible Answers", "Correct Answers")
 	for _, qs := range *questions {
-		fmt.Println(qs.possibleAnswers)
-	}
+		var possibleAnswersStr string
+		var correctAnswersStr string
 
-	for _, qs := range *questions {
-		table.AddRow(qs.name, "testing B", "testing B")
+		for _, i := range qs.possibleAnswers {
+			possibleAnswersStr = fmt.Sprintf("%v, %v", possibleAnswersStr, i)
+		}
+		for _, i := range qs.correctAnswers {
+			correctAnswersStr = fmt.Sprintf("%v, %v", correctAnswersStr, i)
+		}
+		possibleAnswersStr = strings.TrimPrefix(possibleAnswersStr, ", ")
+		correctAnswersStr = strings.TrimPrefix(correctAnswersStr, ", ")
+
+		table.AddRow(qs.name, possibleAnswersStr, correctAnswersStr)
 	}
 
 	table.Render()
