@@ -2,18 +2,17 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strings"
 )
 
 func main() {
 	questions := Questions{}
-	var blankStringList []string
+	//var blankStringList []string
 
 	for {
-		userInput, err := getInput("Command > ")
+		userInput, err := getInput("Command -> ")
 		if err != nil {
-			log.Fatal("error getting command:", err)
+			fmt.Println("error getting command:", err)
 			continue
 		}
 
@@ -21,7 +20,7 @@ func main() {
 
 		switch userInput {
 		case "add":
-			questions.add("testing", blankStringList, blankStringList)
+			//questions.add("testing", blankStringList, blankStringList)
 			addInput(&questions)
 		case "delete":
 			questions.delete(1)

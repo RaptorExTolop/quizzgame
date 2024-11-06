@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/aquasecurity/table"
@@ -82,9 +83,12 @@ func (questions *Questions) printQuestions() error {
 	table := table.New(os.Stdout)
 	table.SetRowLines(false)
 	table.SetHeaders("Name", "Possible Answers", "Correct Answers")
+	for _, qs := range *questions {
+		fmt.Println(qs.possibleAnswers)
+	}
 
 	for _, qs := range *questions {
-		table.AddRow(qs.name, "testing A", "testing B")
+		table.AddRow(qs.name, "testing B", "testing B")
 	}
 
 	table.Render()

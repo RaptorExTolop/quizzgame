@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -33,28 +34,60 @@ func addInput(qs *Questions) error {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("What is the question: ")
 	questionName, err := reader.ReadString('\n')
-	fmt.Println(strings.Replace(questionName, "\n", "", -1))
 	if err != nil {
 		return err
 	}
-	fmt.Print("What are the possible answers: ")
+	questionNameRL := strings.ReplaceAll(questionName, "\n", "")
+	fmt.Printf("%v\n", questionNameRL)
+
+	fmt.Print("What are the possible answers a user can chose from? ")
 	possibleAnswers, err := reader.ReadString('\n')
 	if err != nil {
 		return err
 	}
-	splittedPAns := strings.Split(possibleAnswers, " | ")
-	for i := range len(splittedPAns) {
-		fmt.Printf("P ANS -> %v\n", strings.TrimSpace(splittedPAns[i]))
+	possibleAnswersSplit := strings.Split(possibleAnswers, "|")
+	for i := range possibleAnswersSplit {
+		fmt.Println(strings.TrimSpace(possibleAnswersSplit[i]))
 	}
-	fmt.Print("What are the correct answer/s: ")
+
+	fmt.Print("What are the corect answer/s: ")
 	correctAnswers, err := reader.ReadString('\n')
 	if err != nil {
 		return err
 	}
-	splittedCAns := strings.Split(correctAnswers, "|")
-	for i := range correctAnswers {
-		fmt.Printf("C And -> %v\n", strings.TrimSpace(splittedCAns[i]))
+	correctAnswersSplit := strings.Split(correctAnswers, "|")
+	for i := range correctAnswersSplit {
+		fmt.Println(strings.TrimSpace(correctAnswersSplit[i]))
 	}
 
+	var possibleAnswersSplitRS, correctAnswersSplitRS []string
+
+	var corAnsInPosAns bool = false
+	for i := range possibleAnswersSplit {
+		possibleAnswersSplitRS = append(possibleAnswersSplitRS, strings.TrimSpace(possibleAnswersSplit[i]))
+		if len(correctAnswersSplit) == 1 {
+			if correctAnswersSplit[0] == possibleAnswersSplit[i] {
+				corAnsInPosAns = true
+				correctAnswersSplitRS[0] = strings.TrimSpace(correctAnswersSplit[i])
+				break
+			}
+		} else {
+			for n := range correctAnswersSplit {
+				if correctAnswersSplit[n] == possibleAnswersSplit[i] {
+					correctAnswersSplitRS = append(correctAnswersSplitRS, strings.TrimSpace(correctAnswersSplit[n]))
+					corAnsInPosAns = true
+					break
+				}
+			}
+		}
+	}
+
+	if !corAnsInPosAns {
+		fmt.Println("No correct answer is in the possible answers")
+		err := errors.New("no correct answer is in the possible answers")
+		return err
+	}
+
+	qs.add(questionNameRL, possibleAnswersSplitRS, correctAnswersSplitRS)
 	return nil
 }
