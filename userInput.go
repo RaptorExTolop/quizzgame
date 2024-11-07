@@ -63,14 +63,17 @@ func addInput(qs *Questions) error {
 	var possibleAnswersSplitRS, correctAnswersSplitRS []string
 
 	var corAnsInPosAns bool = false
-	for i := range possibleAnswersSplit { // TODO: FIX THIS STUDIP ASS MUTHER FUCKER
+	for i := range possibleAnswersSplit {
 		possibleAnswersSplitRS = append(possibleAnswersSplitRS, strings.TrimSpace(possibleAnswersSplit[i]))
 		for n := range correctAnswersSplit {
-			correctAnswersSplitRS = append(correctAnswersSplitRS, strings.TrimSpace(correctAnswersSplit[n]))
-			if correctAnswersSplitRS[n] == possibleAnswersSplitRS[i] {
+			if correctAnswersSplit[n] == possibleAnswersSplit[i] {
 				corAnsInPosAns = true
 			}
 		}
+	}
+
+	for x := range correctAnswersSplit {
+		correctAnswersSplitRS = append(correctAnswersSplitRS, strings.TrimSpace(correctAnswersSplit[x]))
 	}
 
 	if len(possibleAnswersSplitRS) <= 0 {
